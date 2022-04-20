@@ -110,7 +110,7 @@ public class GRPCClientService {
 		
 		try {
 			List<String> element = Files.readAllLines(storageService.load(files[index].toString()), StandardCharsets.US_ASCII);
-			String[] matrixLength = element[iteration].split(" ");
+			String[] matrixLength = element[0].split(" ");
 			int[][] matrix = new int[matrixLength.length][matrixLength.length];
 
 			int iteration = 0;
