@@ -1,8 +1,9 @@
-package com.example.uploadingfiles.storage;
+package com.example.grpc.client.grpcclient.storage;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,22 +44,44 @@ public class FileSystemStorageService implements StorageService {
 			}
 			try (InputStream inputStream = file.getInputStream()) {
 				Files.copy(inputStream, destinationFile,
-					StandardCopyOption.REPLACE_EXISTING);
+						StandardCopyOption.REPLACE_EXISTING);
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new StorageException("Failed to store file.", e);
 		}
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+	private boolean checkValidMatrix(MultipartFile file) throws IOException {
+		String uploadedMatrix = new String(file.getBytes(), StandardCharsets.US_ASCII);
+
+		String[] matrixColumn = uploadedMatrix.split("\n");
+		int iteration = 0;
+		///////////////////////////////////
+		if (matrixColumn.length < 2) {
+			return false;
+		}
+		////////////////////////////////////
+		while (iteration < matrixColumn.length) {
+			String[] matrixRow = matrixColumn[iteration].split(" ");
+			if (matrixRow.length != matrixColumn.length) {
+				return false;
+			}
+			iteration = iteration + 1;
+		}
+		return true;
+	}
+	/// CHECK IF MATRIX IS A SQUARE METHOD
+
+	//////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public Stream<Path> loadAll() {
 		try {
 			return Files.walk(this.rootLocation, 1)
-				.filter(path -> !path.equals(this.rootLocation))
-				.map(this.rootLocation::relativize);
-		}
-		catch (IOException e) {
+					.filter(path -> !path.equals(this.rootLocation))
+					.map(this.rootLocation::relativize);
+		} catch (IOException e) {
 			throw new StorageException("Failed to read stored files", e);
 		}
 
@@ -76,14 +99,12 @@ public class FileSystemStorageService implements StorageService {
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {
 				return resource;
-			}
-			else {
+			} else {
 				throw new StorageFileNotFoundException(
 						"Could not read file: " + filename);
 
 			}
-		}
-		catch (MalformedURLException e) {
+		} catch (MalformedURLException e) {
 			throw new StorageFileNotFoundException("Could not read file: " + filename, e);
 		}
 	}
@@ -97,8 +118,7 @@ public class FileSystemStorageService implements StorageService {
 	public void init() {
 		try {
 			Files.createDirectories(rootLocation);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new StorageException("Could not initialize storage", e);
 		}
 	}

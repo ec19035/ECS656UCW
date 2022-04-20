@@ -1,19 +1,58 @@
 package com.example.grpc.client.grpcclient;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
+import java.nio.file.Files;
+
 import com.example.grpc.server.grpcserver.PingRequest;
 import com.example.grpc.server.grpcserver.PongResponse;
+import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
 import com.example.grpc.server.grpcserver.PingPongServiceGrpc;
 import com.example.grpc.server.grpcserver.MatrixRequest;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+
+import com.example.grpc.client.grpcclient.storage.StorageService;
 import com.example.grpc.server.grpcserver.MatrixReply;
 import com.example.grpc.server.grpcserver.MatrixServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+// import io.grpc.internal.Stream;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+
+///////////////// CHANGE UNNEEDED IMPORTS
+///////////////////////////////////////////////////////////////////////////////////
 
 @Service
 public class GRPCClientService {
+
+	private final StorageService storageService;
+
+	String[] internalIPAddresses = new String[] {
+			"localhost",
+			"10.128.0.",
+			"10.128.0.",
+			"10.128.0.",
+			"10.128.0.",
+			"10.128.0.",
+			"10.128.0.",
+			"10.128.0." };
+
+	@Autowired
+	public GRPCClientService(StorageService storageService) {
+		this.storageService = storageService;
+	}
+
 	public String ping() {
 		ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
 				.usePlaintext()

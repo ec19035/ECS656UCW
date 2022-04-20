@@ -27,6 +27,20 @@ public class PingPongEndpoint {
 		return grpcClientService.ping();
 	}
 
+	//////////////////////////////////////////////////////////////////////////////////
+	@GetMapping("/viewpage")
+	public String view() {
+		List<List<Integer>> uploaded1Matrix = grpcClientService.getMatrix(0);
+		List<List<Integer>> uploaded2Matrix = grpcClientService.getMatrix(1);
+
+		String result = grpcClientService.view(uploaded1Matrix);
+		result = result + grpcClientService.view(uploaded2Matrix);
+		return result;
+	}
+
+	///       VIEW PAGE AND UPLOAD MATRIX
+	/////////////////////////////////////////////////////////////////////////////////
+
 	@GetMapping("/add")
 	public String add() {
 		return grpcClientService.add();

@@ -1,10 +1,11 @@
 package com.example.grpc.client.grpcclient;
 
-import com.example.grpc.client.grpcclient.storage.StorageProperties;
-import com.example.grpc.client.grpcclient.storage.StorageService;
 import com.example.grpc.server.grpcserver.HelloRequest;
 import com.example.grpc.server.grpcserver.HelloResponse;
 import com.example.grpc.server.grpcserver.HelloServiceGrpc;
+
+import com.example.grpc.client.grpcclient.storage.StorageProperties;
+import com.example.grpc.client.grpcclient.storage.StorageService;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
