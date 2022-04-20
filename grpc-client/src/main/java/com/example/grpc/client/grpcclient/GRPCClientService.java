@@ -102,4 +102,43 @@ public class GRPCClientService {
 		String resp = A.getC00() + " " + A.getC01() + "<br>" + A.getC10() + " " + A.getC11() + "\n";
 		return resp;
 	}
+
+	public int[][] extractMatrix(int index) {
+		Stream<Path> uploadedFiles = storageService.loadAll();
+        Path[] files = uploadedFiles.toArray(Path[]::new);
+		int[][] matrix = new int[][];
+		
+		try {
+			String[] element = Files.readAllLines(storageService.load(files[index].toString()),StandardCharsets.US_ASCII);
+			int iteration = 0;
+			while(iteration<element.length){
+				String[] matrixRowString = element[iteration].split(" ");
+				int[] matrixRow = new int[];
+				for (String e : matrixRowString){
+					matrixRow[iteration] = Integer.parseInt(e);
+				}
+				matrix[iteration]=matrixRow[iteration];
+				iteration=iteration+1;
+			}
+			return matrix;
+        } catch (IOException e) {
+            System.out.println("ERROR");
+            e.printStackTrace();
+        }
+		return null;
+	}
+
+	public String view(int[][] matrix) {
+		String result = "";
+
+		for (int[] matrixRow : matrix) {
+			for (Integer e : matrixRow) {
+				result = result + e + " ";
+			}
+			result = result + "<br>";
+		}
+		result = result + "<br>";
+
+		return result;
+	}
 }

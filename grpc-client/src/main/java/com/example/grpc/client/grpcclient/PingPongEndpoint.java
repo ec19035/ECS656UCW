@@ -30,8 +30,8 @@ public class PingPongEndpoint {
 	//////////////////////////////////////////////////////////////////////////////////
 	@GetMapping("/viewpage")
 	public String view() {
-		List<List<Integer>> uploaded1Matrix = grpcClientService.getMatrix(0);
-		List<List<Integer>> uploaded2Matrix = grpcClientService.getMatrix(1);
+		int[][] uploaded1Matrix = grpcClientService.getMatrix(0);
+		int[][] uploaded2Matrix = grpcClientService.getMatrix(1);
 
 		String result = grpcClientService.view(uploaded1Matrix);
 		result = result + grpcClientService.view(uploaded2Matrix);
