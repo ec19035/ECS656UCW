@@ -106,14 +106,17 @@ public class GRPCClientService {
 	public int[][] extractMatrix(int index) {
 		Stream<Path> uploadedFiles = storageService.loadAll();
         Path[] files = uploadedFiles.toArray(Path[]::new);
-		int[][] matrix = new int[][];
+		
 		
 		try {
 			String[] element = Files.readAllLines(storageService.load(files[index].toString()),StandardCharsets.US_ASCII);
+			String[] matrixLength = element[iteration].split(" ");
+			int[][] matrix = new int[matrixLength.length][matrixLength.length];
+
 			int iteration = 0;
 			while(iteration<element.length){
 				String[] matrixRowString = element[iteration].split(" ");
-				int[] matrixRow = new int[];
+				int[] matrixRow = new int[matrixRowString.length];
 				for (String e : matrixRowString){
 					matrixRow[iteration] = Integer.parseInt(e);
 				}
