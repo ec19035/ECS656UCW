@@ -40,7 +40,7 @@ public class FileUploadController {
 						"serveFile", path.getFileName().toString()).build().toUri().toString())
 				.collect(Collectors.toList()));
 
-		return "matrixUploadingForm";
+		return "uploadForm";
 	}
 
 	@GetMapping("/files/{filename:.+}")
