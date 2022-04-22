@@ -30,24 +30,24 @@ public class PingPongEndpoint {
 	//////////////////////////////////////////////////////////////////////////////////
 	@GetMapping("/viewpage")
 	public String view() {
-		List<List<Integer>> uploaded1Matrix = grpcClientService.getMatrix(0);
-		List<List<Integer>> uploaded2Matrix = grpcClientService.getMatrix(1);
+		int[][] uploaded1Matrix = grpcClientService.extractMatrix(0);
+		int[][] uploaded2Matrix = grpcClientService.extractMatrix(1);
 
 		String result = grpcClientService.view(uploaded1Matrix);
 		result = result + grpcClientService.view(uploaded2Matrix);
 		return result;
 	}
 
-	///       VIEW PAGE AND UPLOAD MATRIX
+	/// VIEW PAGE AND UPLOAD MATRIX
 	/////////////////////////////////////////////////////////////////////////////////
 
-	@GetMapping("/add")
-	public String add() {
-		return grpcClientService.add();
-	}
+	// @GetMapping("/add")
+	// public String add() {
+	// return grpcClientService.add();
+	// }
 
-	@GetMapping("/mult")
-	public String mult() {
-		return grpcClientService.mult();
-	}
+	// @GetMapping("/mult")
+	// public String mult() {
+	// return grpcClientService.mult();
+	// }
 }

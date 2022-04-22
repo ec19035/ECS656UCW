@@ -8,7 +8,8 @@
 	<div>
 		<form method="POST" enctype="multipart/form-data" action="/">
 			<table>
-				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+				<tr><td>Upload your Matrix Files:</td><td><input type="file" name="file" /></td></tr>
+				<!-- <tr><td>Enter your Deadline:</td><td><input type="number" name="deadline" /></td></tr> -->
 				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
 			</table>
 		</form>
@@ -22,10 +23,17 @@
 			</li>
 		</ul>
 	</div>
+
+	<br>
 	
-	<p>Matrix</p>
-		<div th:each="str : ${message}">    
-			<h2 th:text="${str}"/>
-		</div>
+	<p>Add/Multiply Matrices Uploaded</p>
+	<br>
+	<form method="GET" action="/add">
+		<input type="submit" value="Add" />
+	</form>
+	<br>
+	<form method="GET" action="/mult">
+		<input type="submit" value="Mult" />
+	</form>
 </body>
 </html>

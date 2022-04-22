@@ -65,41 +65,82 @@ public class GRPCClientService {
 		return helloResponse.getPong();
 	}
 
-	public String add() {
-		ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
-				.usePlaintext()
-				.build();
-		MatrixServiceGrpc.MatrixServiceBlockingStub stub = MatrixServiceGrpc.newBlockingStub(channel);
-		MatrixReply A = stub.addBlock(MatrixRequest.newBuilder()
-				.setA00(1)
-				.setA01(2)
-				.setA10(5)
-				.setA11(6)
-				.setB00(1)
-				.setB01(2)
-				.setB10(5)
-				.setB11(6)
-				.build());
-		String resp = A.getC00() + " " + A.getC01() + "<br>" + A.getC10() + " " + A.getC11() + "\n";
-		return resp;
+	// public String add() {
+	// ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
+	// .usePlaintext()
+	// .build();
+	// MatrixServiceGrpc.MatrixServiceBlockingStub stub =
+	// MatrixServiceGrpc.newBlockingStub(channel);
+	// MatrixReply A = stub.addBlock(MatrixRequest.newBuilder()
+	// .setA00(1)
+	// .setA01(2)
+	// .setA10(5)
+	// .setA11(6)
+	// .setB00(1)
+	// .setB01(2)
+	// .setB10(5)
+	// .setB11(6)
+	// .build());
+	// String resp = A.getC00() + " " + A.getC01() + "<br>" + A.getC10() + " " +
+	// A.getC11() + "\n";
+	// return resp;
+	// }
+
+	// public String mult() {
+	// ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
+	// .usePlaintext()
+	// .build();
+	// MatrixServiceGrpc.MatrixServiceBlockingStub stub =
+	// MatrixServiceGrpc.newBlockingStub(channel);
+	// MatrixReply A = stub.multiplyBlock(MatrixRequest.newBuilder()
+	// .setA00(1)
+	// .setA01(2)
+	// .setA10(5)
+	// .setA11(6)
+	// .setB00(1)
+	// .setB01(2)
+	// .setB10(5)
+	// .setB11(6)
+	// .build());
+	// String resp = A.getC00() + " " + A.getC01() + "<br>" + A.getC10() + " " +
+	// A.getC11() + "\n";
+	// return resp;
+	// }
+
+	public int[][] extractMatrix(int idx) {
+		Stream<Path> uploadAllMatrices = storageService.loadAll();
+		Path[] files = uploadAllMatrices.toArray(Path[]::new);
+		int iter = 0;
+		try {
+			List<String> matrixElements = Files.readAllLines(storageService.load(files[idx].toString()),
+					StandardCharsets.US_ASCII);
+			int[][] matrix = new int[matrixElements.size()][matrixElements.size()];
+			while (iter < matrixElements.size()) {
+				String[] stringMatrixRow = matrixElements.get(iter).split(" ");
+				for (int i = 0; i < stringMatrixRow.length; i++) {
+					matrix[iter][i] = Integer.parseInt(stringMatrixRow[i]);
+				}
+				iter = iter + 1;
+			}
+			return matrix;
+		} catch (IOException e) {
+			System.out.println("ERROR WHILE READING FILE");
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public String mult() {
-		ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
-				.usePlaintext()
-				.build();
-		MatrixServiceGrpc.MatrixServiceBlockingStub stub = MatrixServiceGrpc.newBlockingStub(channel);
-		MatrixReply A = stub.multiplyBlock(MatrixRequest.newBuilder()
-				.setA00(1)
-				.setA01(2)
-				.setA10(5)
-				.setA11(6)
-				.setB00(1)
-				.setB01(2)
-				.setB10(5)
-				.setB11(6)
-				.build());
-		String resp = A.getC00() + " " + A.getC01() + "<br>" + A.getC10() + " " + A.getC11() + "\n";
-		return resp;
+	public String view(int[][] matrix) {
+		String result = "";
+		int iter = 0;
+		while (iter < matrix.length) {
+			for (int i = 0; i < matrix[0].length; i++) {
+				result = result + matrix[iter][i] + " ";
+			}
+			result = result + "<br>";
+			iter = iter + 1;
+		}
+		result = result + "<br>";
+		return result;
 	}
 }
