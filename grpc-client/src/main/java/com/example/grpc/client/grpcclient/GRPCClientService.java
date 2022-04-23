@@ -43,14 +43,14 @@ public class GRPCClientService {
 	private final StorageService storageService;
 
 	String[] internalIPAddresses = new String[] {
-			"localhost",
-			"10.128.0.",
-			"10.128.0.",
-			"10.128.0.",
-			"10.128.0.",
-			"10.128.0.",
-			"10.128.0.",
-			"10.128.0." };
+			"10.128.0.3",
+			"10.128.0.4",
+			"10.128.0.5",
+			"10.128.0.6",
+			"10.128.0.7",
+			"10.128.0.8",
+			"10.128.0.9",
+			"10.128.0.10" };
 
 	@Autowired
 	public GRPCClientService(StorageService storageService) {
